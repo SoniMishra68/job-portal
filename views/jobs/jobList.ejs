@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Listings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      min-height: 100vh;
+    }
+    .sidebar {
+      height: 100vh;
+      background-color: #343a40;
+      padding-top: 1rem;
+    }
+    .sidebar a {
+      color: #fff;
+      padding: 10px;
+      display: block;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+    .content {
+      padding: 20px;
+    }
+    .card-job {
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Include Sidebar -->
+    <%- include('../partials/sidebar') %>
+    <!-- Main Content -->
+    <div class="col-md-10 content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Job Listings</h2>
+        <a href="/jobs/post" class="btn btn-primary">Post New Job</a>
+      </div>
+      <% if (jobs.length === 0) { %>
+        <div class="alert alert-warning">No jobs found.</div>
+      <% } %>
+      <div class="row">
+        <% jobs.forEach(job => { %>
+          <div class="col-md-6">
+            <div class="card card-job p-3">
+              <h4 class="card-title"><%= job.title %></h4>
+              <p class="card-text"><strong>Description:</strong> <%= job.description %></p>
+              <p class="card-text"><strong>Location:</strong> <%= job.location %></p>
+              <!-- <p class="card-text"> <strong>Company:</strong> <%= job.company %></p> -->
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                  <% if (job.resume) { %>
+                    <a class="btn btn-sm btn-outline-info" href="/uploads/resumes/<%= job.resume %>" download>
+                      Download Resume
+                    </a>
+                  <% } %>
+                </div>
+                <a class="btn btn-sm btn-danger" href="/jobs/delete/<%= job.id %>" onclick="return confirm('Are you sure you want to delete this job?')">
+                  Delete
+                </a>
+                <a class="btn btn-sm btn-warning" href="/jobs/edit/<%= job.id %>">Edit</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
